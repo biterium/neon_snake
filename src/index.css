@@ -1,0 +1,194 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Unbounded", "Rubik", sans-serif;
+  --font-body: "Rubik", "Segoe UI", sans-serif;
+
+  --color-abyss: #050f0b;
+  --color-pine: #081711;
+  --color-moss: #0d241a;
+  --color-moss2: #123124;
+  --color-line: #1d4030;
+  --color-line2: #2a5a42;
+  --color-mint: #3df5a6;
+  --color-leaf: #17c07a;
+  --color-deep: #0e8f5b;
+  --color-amber: #ffb43a;
+  --color-coral: #ff5d73;
+  --color-gold: #ffd166;
+  --color-ink: #eafff3;
+  --color-fog: #86b39c;
+
+  --animate-pop: pop 0.34s cubic-bezier(0.2, 1.8, 0.4, 1);
+  --animate-fade-up: fadeUp 0.45s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  --animate-rise: rise 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  --animate-blink: blink 1.5s ease-in-out infinite;
+  --animate-drift-a: driftA 26s ease-in-out infinite alternate;
+  --animate-drift-b: driftB 34s ease-in-out infinite alternate;
+  --animate-floaty: floaty 7s ease-in-out infinite;
+  --animate-pulse-dot: pulseDot 1.5s ease-in-out infinite;
+  --animate-wobble: wobble 2.6s ease-in-out infinite;
+
+  @keyframes pop {
+    from { transform: scale(1.45); }
+    to { transform: scale(1); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(26px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  @keyframes driftA {
+    from { transform: translate3d(-6%, -4%, 0) scale(1); }
+    to { transform: translate3d(9%, 11%, 0) scale(1.18); }
+  }
+  @keyframes driftB {
+    from { transform: translate3d(7%, 9%, 0) scale(1.12); }
+    to { transform: translate3d(-9%, -7%, 0) scale(0.94); }
+  }
+  @keyframes floaty {
+    0%, 100% { transform: translateY(0); opacity: 0.35; }
+    50% { transform: translateY(-22px); opacity: 0.9; }
+  }
+  @keyframes pulseDot {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(61, 245, 166, 0.55); }
+    50% { box-shadow: 0 0 0 6px rgba(61, 245, 166, 0); }
+  }
+  @keyframes wobble {
+    0%, 100% { transform: rotate(-2deg) translateY(0); }
+    50% { transform: rotate(2deg) translateY(-3px); }
+  }
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background-color: #050f0b;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+::selection {
+  background: rgba(61, 245, 166, 0.35);
+  color: #eafff3;
+}
+
+/* ── Стилизованные клавиши ─────────────────────────── */
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.7rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.4rem;
+  border: 1px solid #2a5a42;
+  border-bottom-width: 3px;
+  background: #0d241a;
+  color: #bfe9d4;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* ── Эффекты поля ──────────────────────────────────── */
+
+/* Колонка «HUD + поле»: вписывается в высоту экрана, чтобы
+   на телефоне помещались и поле, и сенсорные кнопки. */
+.board-stack {
+  width: 100%;
+  max-width: 620px;
+}
+@supports (height: 100dvh) {
+  .board-stack {
+    width: max(262px, min(100%, 620px, calc(100dvh - 300px)));
+  }
+  @media (max-width: 1023px) {
+    .board-stack {
+      width: max(238px, min(100%, 560px, calc(100dvh - 470px)));
+    }
+  }
+}
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.026) 0px,
+    rgba(255, 255, 255, 0.026) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.board-vignette {
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.55),
+    inset 0 0 6px rgba(61, 245, 166, 0.12);
+}
+
+.bg-grid-pattern {
+  background-image:
+    linear-gradient(rgba(61, 245, 166, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61, 245, 166, 0.05) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 18%, black 25%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 18%, black 25%, transparent 78%);
+}
+
+.text-glow-mint {
+  text-shadow: 0 0 26px rgba(61, 245, 166, 0.5), 0 0 4px rgba(61, 245, 166, 0.3);
+}
+
+.text-glow-coral {
+  text-shadow: 0 0 26px rgba(255, 93, 115, 0.55), 0 0 4px rgba(255, 93, 115, 0.35);
+}
+
+.text-glow-gold {
+  text-shadow: 0 0 22px rgba(255, 209, 102, 0.55);
+}
+
+.btn-arcade {
+  transition: transform 0.12s ease, box-shadow 0.2s ease, background-color 0.2s ease,
+    color 0.2s ease, border-color 0.2s ease, filter 0.2s ease;
+}
+.btn-arcade:hover {
+  filter: brightness(1.12);
+}
+.btn-arcade:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+.pad-btn {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-drift-a,
+  .animate-drift-b,
+  .animate-floaty,
+  .animate-wobble,
+  .animate-blink,
+  .animate-pulse-dot {
+    animation: none !important;
+  }
+}
